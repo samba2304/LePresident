@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 
 struct Carte;
@@ -15,3 +16,4 @@ struct listeCartes * creerListeCartes (void);
 void ajouterCarte(struct Carte * carte, struct listeCartes * liste);
 
 void afficherCartes(struct listeCartes * liste);
+

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "carte.h"
+#include <time.h>
+#include "joeur.h" 
 
 struct Carte{
     char couleur;
@@ -75,3 +77,4 @@ void afficherCartes(struct listeCartes * liste){
         carteCourante= carteCourante->suivant;
     }
 }
+

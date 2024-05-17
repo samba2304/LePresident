@@ -1,30 +1,65 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "carte.h"
 #include "joeur.h"
 
-int main(void){
-struct Carte * carte1 = creerCarte('R',4,'C');
-struct Carte * carte2=creerCarte('N',6,'S');
-struct Carte * carte3=creerCarte('Z',88,'T');
+void melangerCartes(struct Carte *cartes[], int n) {
+    srand(time(NULL)); // Initialiser le générateur de nombres aléatoires
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        struct Carte *temp = cartes[i];
+        cartes[i] = cartes[j];
+        cartes[j] = temp;
+    }
+}
 
-struct listeCartes * liste=creerListeCartes();
-struct listeCartes * liste2=creerListeCartes();
+void distribuerCartes(struct Carte *cartes[], int n, struct Joeur *joeur1, struct Joeur *joeur2) {
+    for (int i = 0; i < n; i++) {
+        if (i % 2 == 0) {
+            ajouterCarteJoeur(cartes[i], joeur1);
+        } else {
+            ajouterCarteJoeur(cartes[i], joeur2);
+        }
+    }
+}
 
-struct Joeur * joeur1=creerJoeur(01,liste);
-struct Joeur * joeur2=creerJoeur(02,liste2);
+int main(void) {
+    // Création des 52 cartes du jeu Président
+    char couleurs[] = {'R', 'N'}; // Rouge et Noir
+    char formes[] = {'H', 'D', 'S', 'C'}; // Coeurs, Carreaux, Piques, Trèfles
+    int valeurs[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}; // 2 à As (As = 14)
 
-ajouterCarteJoeur(carte2,joeur1);
-ajouterCarteJoeur(carte1,joeur2);
-ajouterCarteJoeur(carte3,joeur1);
+
+    struct Carte *cartes[52];
+    int index = 0;
+    for (int j = 0; j < 4; j++) { // Pour chaque forme
+        for (int k = 0; k < 13; k++) { // Pour chaque valeur
+            cartes[index] = creerCarte(couleurs[j/2], valeurs[k], formes[j]);
+            index++;
+        }
+    }
 
 
-//printf("%d \n" , liste->debut->valeur);
-//printf("%d \n" , liste->fin->valeur);
+    // Mélanger les cartes
+    melangerCartes(cartes, 52);
 
-afficherCartesJoeur(joeur1);
-printf("Jooeur 2\n");
-afficherCartesJoeur(joeur2);
+    // Créer deux joueurs
+    struct listeCartes *liste1 = creerListeCartes();
+    struct listeCartes *liste2 = creerListeCartes();
+    struct Joeur *joeur1 = creerJoeur(1, liste1);
+    struct Joeur *joeur2 = creerJoeur(2, liste2);
 
-return 0;
+    // Distribuer les cartes mélangées aux deux joueurs
+    distribuerCartes(cartes, 52, joeur1, joeur2);
+
+    // Afficher les cartes des joueurs
+    printf("Joueur 1\n");
+    afficherCartesJoeur(joeur1);
+    printf("Joueur 2\n");
+    afficherCartesJoeur(joeur2);
+
+    // Libérer la mémoire (à implémenter)
+
+    return 0;
 }

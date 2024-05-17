@@ -26,9 +26,8 @@ struct Joeur *creerJoeur(int id , struct listeCartes * listeC){
 
 }
 
-void afficherCartesJoeur(struct Joeur * joeur){
-    struct Carte * carteCourante = joeur->mesCartes;
-    afficherCartes(carteCourante);
+void afficherCartesJoeur(struct Joeur *joeur) {
+    afficherCartes(joeur->mesCartes);
 }
 
 void ajouterCarteJoeur(struct Carte * carte,struct Joeur * joeur){
